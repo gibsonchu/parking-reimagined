@@ -20,13 +20,14 @@
 
 Every on-street parking space is a small plot of public land — roughly **8 × 20 feet, about 160 square feet** — that we've agreed to use for storing one private car. **Parking, Reimagined** lets anyone explore what else that land could become: outdoor dining, a pocket park, bike parking, a bus shelter, a rain garden, a little home. Draw a design to real dimensions, watch the impact add up, learn from real-world precedents, and walk out with the materials to make the case in a community meeting.
 
-It runs entirely in the browser, needs no account, and is free to use and to fork.
+It runs entirely in the browser, needs no account, and is **free to use, fork, and adapt** — see [**Get involved**](#get-involved).
 
 ## Table of Contents
 
 - [About](#about)
 - [What you can do](#what-you-can-do)
 - [How it works](#how-it-works)
+- [Architecture & data model](#architecture--data-model)
 - [Project structure](#project-structure)
 - [Getting started](#getting-started)
 - [Data & sourcing](#data--sourcing)
@@ -68,8 +69,33 @@ The project is a companion resource to the **[Parking Reform Network](https://pa
 - **1 grid cell = 1 foot.** Every statistic — square feet reimagined, land-use breakdown, and car spaces reclaimed (at 160 sq ft per space) — is derived from real footprints on a one-foot grid, not estimated. The math lives in [`src/lib/impact.ts`](src/lib/impact.ts) and is pure and unit-tested ([`impact.test.ts`](src/lib/impact.test.ts)).
 - **No backend.** Designs persist to `localStorage`, and the **Share** button encodes the entire project into the URL hash (via `lz-string`), so a link fully reconstructs a design with nothing stored on a server.
 - **Canvas.** Built on `react-konva`: one-foot grid snapping, boundary enforcement, 90° rotation, keyboard nudging and deletion, and a soft collision warning when elements overlap. Motion respects `prefers-reduced-motion`.
-- **One source of truth for elements.** The same dataset ([`src/data/elements.ts`](src/data/elements.ts)) powers the design canvas, the Elements catalog, the printable Workshop Kit, and the exports — so an element's name, icon, dimensions, and category never drift between surfaces.
 - **Exports** are generated client-side with `jsPDF` and canvas rasterization — no server round-trip.
+- **One dataset, many views.** The element catalog, the design tool, the stats, the workshop, and the exports all read the same structured data — see [Architecture & data model](#architecture--data-model).
+
+<sub>[↑ Back to top](#table-of-contents)</sub>
+
+## Architecture & data model
+
+Parking, Reimagined is **data-driven**: the substance of the site lives in a handful of typed datasets under [`src/data/`](src/data/), and the UI is a set of views over that data. Add or edit one record and it appears everywhere it's relevant — there's no second copy to keep in sync.
+
+The core dataset is the **element catalog** ([`elements.ts`](src/data/elements.ts)). Each element is a single typed object — a footprint in feet, a category, a cost range, an icon, and optional capacity. From that one definition:
+
+- the **Design tool** lists it in the toy box and draws it to scale on the one-foot grid;
+- the **impact calculations** ([`impact.ts`](src/lib/impact.ts)) sum footprints into square feet reimagined, land-use breakdown, car spaces reclaimed, and cost — all from real geometry, and unit-tested;
+- the **Elements Library** shows its dimensions and cost alongside its long-form content and sources ([`elementDetails.ts`](src/data/elementDetails.ts));
+- the printable **Workshop Kit** produces a cut-out piece at the same scale as the board;
+- and the **exports** (snapshot, proposal, presentation slide) read the same numbers, so the screen and the PDF never disagree.
+
+The **Library of precedents** ([`precedents.ts`](src/data/precedents.ts)) follows the same pattern: real projects as structured records that link back to the elements they use.
+
+```
+src/data/elements.ts  ──►  Design tool ─► impact.ts (stats) ─► exports
+     (one element)    ├─►  Elements Library (+ elementDetails.ts, sources)
+                      └─►  Workshop Kit (scaled cut-outs)
+src/data/precedents.ts ─►  Library gallery ──► links back to elements
+```
+
+Because everything is typed and file-based with no backend, the tool is straightforward to **fork and adapt** (see [Get involved](#get-involved)): edit the datasets and you have a version tuned to your own city, costs, and campaign.
 
 <sub>[↑ Back to top](#table-of-contents)</sub>
 
@@ -142,20 +168,23 @@ The app is a static single-page build deployed on [Vercel](https://vercel.com/) 
 
 ## Get involved
 
-Contributions are welcome — this is a small, friendly project and there's a lot of room to help.
+**This project is meant to be built on, and it needs more than developers.** If you're a **planner, advocate, researcher, designer, educator, or community organizer**, your knowledge is exactly what makes the numbers and examples trustworthy — you're welcome here.
 
-- 🐛 **Found a bug or have an idea?** Open an [issue](https://github.com/gibsonchu/parking-reimagined/issues).
-- 💬 **Want to talk it through first?** Start a [discussion](https://github.com/gibsonchu/parking-reimagined/discussions).
-- 🔧 **Ready to contribute?** Read [CONTRIBUTING.md](CONTRIBUTING.md) and open a pull request.
+**No code required:**
 
-**Good first contributions:**
+- Suggest a **real-world precedent** for the Library, or a **curb element** that's missing.
+- **Verify or correct a cost figure**, or add a citation (see [`SOURCES.md`](SOURCES.md)).
+- Tell us what's **confusing, missing, or could be stronger** — copy, numbers, or design.
+- **Use it and share it** — run a workshop, bring it to a city or neighborhood group, and tell us how it went.
+- Contribute **openly-licensed photos** of real projects.
 
-- Add a **real-world precedent** to the Library (a parklet, plaza, green street, etc.) with a source and an openly-licensed photo.
-- Replace a **placeholder cost range** with a cited figure (see [`SOURCES.md`](SOURCES.md)).
-- Improve **accessibility** (keyboard, screen-reader, contrast).
-- Help with **internationalization** or with adapting the Take Action guide to a specific city.
+Just open an [issue](https://github.com/gibsonchu/parking-reimagined/issues) (there are templates for bugs, ideas, and content) or start a [discussion](https://github.com/gibsonchu/parking-reimagined/discussions).
 
-All participation is covered by our [Code of Conduct](CODE_OF_CONDUCT.md).
+**With code:** read [CONTRIBUTING.md](CONTRIBUTING.md) — it has step-by-step recipes for adding an element, a precedent, or a source — then open a pull request. All participation is covered by our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+### Fork it and make it yours
+
+A core reason this is open source: **any organization or community should be able to fork Parking, Reimagined and adapt it to their place.** Swap in local elements and costs, add your own precedents, retheme it, or point the Take Action guide at your city's process. It's [MIT-licensed](LICENSE) and has no backend, so a fork is entirely yours to run and change. If you build something on it, we'd love to hear about it in the [discussions](https://github.com/gibsonchu/parking-reimagined/discussions).
 
 <sub>[↑ Back to top](#table-of-contents)</sub>
 
@@ -186,7 +215,7 @@ Parking, Reimagined has no accounts, no analytics, and no server-side storage. Y
 - **[Parking Reform Network](https://parkingreform.org)** — research and advocacy for parking reform.
 - **[PARK(ing) Day](https://www.myparkingday.org/)** — the global movement this tool celebrates.
 - **[Strong Towns](https://www.strongtowns.org/)** — community-led, incremental placemaking.
-- **[Open Mobility Foundation — Curb Data Specification](https://github.com/openmobilityfoundation/curb-data-specification)** — the open standard for describing and managing the curb; a north star for treating curb space as public infrastructure.
+- **[Open Mobility Foundation — Curb Data Specification (CDS)](https://github.com/openmobilityfoundation/curb-data-specification)** — an open standard for describing and managing the curb as structured data. CDS is an inspiration for how this project thinks about the curb: as **public infrastructure that can be described in structured, shareable data**, not an afterthought. To be clear, Parking, Reimagined **does not currently implement CDS** — it's a design-and-advocacy tool, not a data interchange with city systems — but that shared premise (the curb as structured data) is why it's noted here, and CDS interoperability is an interesting future direction.
 - The work of **Donald Shoup** (*The High Cost of Free Parking*) underpins much of the thinking here.
 
 Created by [Gibson Chu](https://github.com/gibsonchu). This tool is educational and is not a substitute for professional engineering, planning, or legal advice.
