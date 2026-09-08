@@ -1,8 +1,8 @@
 <h1 align="center">Parking, Reimagined</h1>
 
 <p align="center">
-  <strong>Turn a parking space into something the community can enjoy.</strong><br>
-  A free, open-source tool for redesigning curb and parking space — and making the case for it.
+  <strong>Turn a parking space into something for the community.</strong><br>
+  A free, open-source tool for redesigning curb and parking space.
 </p>
 
 <p align="center">
@@ -13,12 +13,12 @@
 </p>
 
 <p align="center">
-  <a href="https://parking-reimagined.com"><strong>▶ Open the live app</strong></a>
+  <a href="https://parking-reimagined.com"><strong>▶ Open the app</strong></a>
 </p>
 
 ---
 
-Every on-street parking space is a small plot of public land — roughly **8 × 20 feet, about 160 square feet** — that we've agreed to use for storing one private car. **Parking, Reimagined** lets anyone explore what else that land could become: outdoor dining, a pocket park, bike parking, a bus shelter, a rain garden, a little home. Draw a design to real dimensions, watch the impact add up, learn from real-world precedents, and walk out with the materials to make the case in a community meeting.
+Every on-street parking space is a small plot of public land — around **8 × 20 feet, about 160 square feet** — that is used to store one private car. **Parking, Reimagined** encourages someone to explore what else that land could be used for: outdoor dining, a pocket park, bike parking, a bus shelter, a rain garden, a little home. Create your own design with pre-made elements, explore real-world precedents, and receive personalized materials to share with others online or in a community meeting.
 
 It runs entirely in the browser, needs no account, and is **free to use, fork, and adapt** — see [**Get involved**](#get-involved).
 
@@ -43,9 +43,9 @@ It runs entirely in the browser, needs no account, and is **free to use, fork, a
 
 Cities devote an enormous share of their most valuable public space to parking — by some estimates the United States has [several parking spaces for every car](https://www.fastcompany.com/90645900/america-has-eight-parking-spaces-for-every-car-heres-how-cities-are-rethinking-that-land). Reclaiming even one space can measurably change a block, but the idea is easy to dismiss and hard to picture. Advocates need a way to *show* the trade-off, ground it in real numbers, and turn a good idea into a real project.
 
-Parking, Reimagined is that bridge. It pairs a joyful, top-down design tool with a researched library of what's already been built, a transparent methodology, and a practical guide for getting a project approved. The tone is deliberately warm and playful — reclaiming public space should feel inviting, not bureaucratic.
+Parking, Reimagined aims to be that bridge. It pairs a simple, well-designed tool based on a researched library of what's already been built, a transparent methodology, and a practical guide for getting a project approved. The tone is deliberately warm and playful — designing something for the community should feel inviting, not bureaucratic.
 
-The project is a companion resource to the **[Parking Reform Network](https://parkingreform.org)** and is tied to **[PARK(ing) Day](https://www.myparkingday.org/)**, the global movement — begun in 2005 — of turning metered parking spaces into temporary public parks.
+The project is a companion resource to the **[Parking Reform Network](https://parkingreform.org)** and inspired based on **[PARK(ing) Day](https://www.myparkingday.org/)**, the global movement — begun in 2005 — of turning metered parking spaces into temporary public parks.
 
 <sub>[↑ Back to top](#table-of-contents)</sub>
 
