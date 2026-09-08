@@ -1,0 +1,489 @@
+@import "tailwindcss";
+
+/* Site-plan theme tokens (mirrors src/theme/palette.ts) */
+@theme {
+  --color-ink: #1f2328;
+  --color-ink-soft: #6b7280;
+  --color-paper: #ffffff;
+  --color-plot: #fbf9f2;
+  --color-grid: #e7e4d9;
+  --color-rule: #d8d4c9;
+  --color-frame: #2a2d31;
+  --color-sky: #eef1f4;
+  --color-leaf: #2e9e4f;
+  --font-plan: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: var(--font-plan);
+  background: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* stats, dimensions and tables line up when figures are tabular */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* the page reads as a sheet of drawing paper */
+.dots {
+  background: var(--color-paper);
+}
+
+/* secondary annotation voice: same clean face, lighter and slightly tracked */
+.note {
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+
+/* 1-ft drafting grid for DOM thumbnails (canvas draws its own) */
+.checker {
+  background-image:
+    linear-gradient(to right, var(--color-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-grid) 1px, transparent 1px);
+}
+
+/* drawing-sheet panel */
+.panel {
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: 6px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(31, 35, 40, 0.06);
+}
+.panel-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  margin-bottom: 10px;
+}
+
+/* clickable Elements-catalog card: subtle lift + stronger border on hover/focus */
+.element-card {
+  cursor: pointer;
+  transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s;
+}
+.element-card:hover,
+.element-card:focus-visible {
+  border-color: var(--color-frame);
+  box-shadow: 0 6px 16px rgba(31, 35, 40, 0.12);
+  transform: translateY(-1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .element-card {
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .element-card:hover,
+  .element-card:focus-visible {
+    transform: none;
+  }
+}
+
+.wood-btn {
+  background: var(--color-paper);
+  border: 1px solid var(--color-frame);
+  border-radius: 4px;
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-ink);
+  cursor: pointer;
+  font-family: var(--font-plan);
+  transition: background 0.1s ease;
+}
+.wood-btn:hover {
+  background: var(--color-sky);
+}
+.wood-btn:active {
+  background: var(--color-grid);
+}
+
+.sun-btn {
+  background: var(--color-frame);
+  border: 1px solid var(--color-frame);
+  border-radius: 4px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: var(--font-plan);
+  transition: background 0.1s ease;
+}
+.sun-btn:hover {
+  background: #000000;
+}
+
+.card-btn {
+  text-align: left;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: 6px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.12s, box-shadow 0.12s;
+  box-shadow: 0 1px 2px rgba(31, 35, 40, 0.05);
+  font-family: var(--font-plan);
+  color: var(--color-ink);
+}
+.card-btn:hover,
+.card-btn:focus-visible {
+  border-color: var(--color-frame);
+  box-shadow: 0 4px 14px rgba(31, 35, 40, 0.12);
+}
+
+.scale-card {
+  text-align: left;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: 6px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 2px rgba(31, 35, 40, 0.05);
+  font-family: var(--font-plan);
+  color: var(--color-ink);
+  transition: border-color 0.12s;
+}
+.scale-card:hover {
+  border-color: var(--color-frame);
+}
+
+/* the design title prompts in italics while it is still unnamed */
+.title-input::placeholder {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-ink-soft);
+  opacity: 1;
+}
+
+/* green dimension annotation, e.g. "← 20 ft →" */
+.dim {
+  font-size: 11.5px;
+  color: var(--color-leaf);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* quantity stepper button (workshop element counts) */
+.wk-step {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--color-frame);
+  border-radius: 5px;
+  background: var(--color-paper);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-ink);
+}
+.wk-step:hover {
+  background: var(--color-sky);
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-leaf);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wood-btn,
+  .sun-btn,
+  .card-btn,
+  .scale-card {
+    transition: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   Community Workshop Kit — print layout (real-inch sizing)
+   ───────────────────────────────────────────────────────── */
+.wk-sheets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+}
+.wk-page {
+  background: #fff;
+  color: #111;
+  width: max-content;
+  min-width: 6in;
+  max-width: 100%;
+  padding: 0.4in;
+  box-sizing: border-box;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.16);
+  page-break-after: always;
+  font-family: var(--font-plan);
+}
+.wk-brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.wk-h2 {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 6px 0 4px;
+}
+.wk-muted {
+  font-size: 13px;
+  color: #555;
+  margin: 0 0 14px;
+}
+/* instruction poster */
+.wk-poster {
+  text-align: center;
+}
+.wk-poster-title {
+  font-size: 46px;
+  font-weight: 800;
+  margin: 8px 0 6px;
+}
+.wk-poster-sub {
+  font-size: 18px;
+  color: #333;
+  margin: 0 auto 26px;
+  max-width: 7in;
+}
+.wk-poster-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  text-align: left;
+  max-width: 9in;
+  margin: 0 auto;
+}
+.wk-poster-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.wk-poster-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  flex: none;
+}
+.wk-poster-verb {
+  font-size: 20px;
+  font-weight: 800;
+}
+.wk-poster-prompt {
+  font-size: 15px;
+  color: #333;
+}
+.wk-poster-foot {
+  margin-top: 28px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+/* base board */
+.wk-board-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.wk-board-title {
+  font-size: 24px;
+  font-weight: 800;
+}
+.wk-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 12px 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.wk-line {
+  display: inline-block;
+  width: 180px;
+  border-bottom: 1.5px solid #111;
+}
+.wk-line-sm {
+  width: 110px;
+}
+.wk-dimtop {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 4px;
+}
+.wk-board-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wk-dimside {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 12px;
+  font-weight: 700;
+  color: #333;
+}
+.wk-board {
+  position: relative;
+  border: 2.5px solid #111;
+  background-color: #fff;
+  background-image: linear-gradient(to right, #e6e6e6 1px, transparent 1px), linear-gradient(to bottom, #e6e6e6 1px, transparent 1px);
+}
+.wk-stall {
+  position: absolute;
+  border: 1.5px dashed #555;
+  box-sizing: border-box;
+}
+.wk-legend {
+  margin-top: 12px;
+  font-size: 13px;
+  font-style: italic;
+  color: #333;
+}
+/* element cut-outs */
+.wk-sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.wk-sheet-note {
+  font-size: 11px;
+  color: #555;
+}
+.wk-cutgrid {
+  line-height: 0;
+}
+.wk-cutout {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px dashed #333;
+  box-sizing: border-box;
+  margin: 0.12in;
+  padding: 3px;
+  overflow: hidden;
+  vertical-align: top;
+  background: #fff;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+.wk-cat {
+  font-size: 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: #666;
+}
+.wk-sprite {
+  display: flex;
+  line-height: 0;
+  margin: 2px 0;
+}
+.wk-name {
+  font-size: 9px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.05;
+  color: #111;
+}
+.wk-name-blank {
+  color: #555;
+  font-weight: 600;
+}
+/* facilitator prompts */
+.wk-prompts {
+  columns: 2;
+  column-gap: 40px;
+  font-size: 14px;
+  line-height: 1.95;
+  padding-left: 18px;
+  margin: 0;
+}
+/* output sheet */
+.wk-out-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+.wk-out-label {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.wk-line-full {
+  border-bottom: 1.5px solid #111;
+  height: 20px;
+}
+.wk-out-photo {
+  margin-top: 22px;
+  border: 2px dashed #333;
+  height: 3.2in;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #555;
+  position: relative;
+}
+.wk-qr {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 0.9in;
+  height: 0.9in;
+  border: 1.5px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #777;
+}
+.no-break {
+  page-break-inside: avoid;
+}
+
+@media print {
+  body.printing-workshop #root {
+    display: none !important;
+  }
+  .workshop-print-portal {
+    position: static !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .wk-sheets {
+    padding: 0;
+    gap: 0;
+  }
+  .wk-page {
+    box-shadow: none !important;
+    min-width: 0;
+    width: auto;
+    padding: 0;
+  }
+}
