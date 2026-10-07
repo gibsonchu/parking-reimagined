@@ -12,9 +12,46 @@ export interface Template {
   emoji: string;
   blurb: string;
   items: TemplateItem[];
+  /** Overrides the scale's dimensions for a curated, larger scenario. */
+  customDims?: { wFt: number; lFt: number };
+  /** An optional design-exercise prompt shown in the editor when loaded. */
+  prompt?: string;
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "ltn", name: "Low-Traffic Neighborhood", scale: "lot", emoji: "🚸",
+    customDims: { wFt: 30, lFt: 48 },
+    blurb: "A residential block reclaimed from cut-through traffic — filter planters, a pocket park & room to gather.",
+    prompt: "How would you use this curb space in a Low Traffic Neighborhood?",
+    items: [
+      // ── Modal filter (near gateway): planters flanked by trees close the block to through-traffic ──
+      { ref: "tree", x: 0, y: 0 },
+      { ref: "planter", x: 8, y: 1 }, { ref: "planter", x: 13, y: 1 }, { ref: "planter", x: 18, y: 1 },
+      { ref: "tree", x: 24, y: 0 },
+      // ── Commons: left (stormwater + shade) ──
+      { ref: "raingarden", x: 0, y: 9, rotation: 90 },
+      { ref: "tree", x: 0, y: 31 },
+      { ref: "bench", x: 1, y: 40 },
+      // ── Commons: center (play + gathering) ──
+      { ref: "lawn", x: 7, y: 9 },
+      { ref: "cafe-table", x: 8, y: 19 },
+      { ref: "comm-table", x: 8, y: 25 },
+      { ref: "library", x: 8, y: 35 },
+      { ref: "art", x: 11, y: 36 },
+      // ── Commons: right (bike parking + seating) ──
+      { ref: "bikecorral", x: 16, y: 9, rotation: 90 },
+      { ref: "tree", x: 24, y: 9 },
+      { ref: "bench", x: 25, y: 17 },
+      { ref: "cafe-table", x: 25, y: 21 },
+      { ref: "tree", x: 24, y: 31 },
+      { ref: "bench", x: 25, y: 40 },
+      // ── Modal filter (far gateway): planters + a daylighted crossing ──
+      { ref: "tree", x: 0, y: 42 },
+      { ref: "planter", x: 8, y: 43 }, { ref: "planter", x: 13, y: 43 }, { ref: "planter", x: 18, y: 43 },
+      { ref: "daylight", x: 24, y: 42 },
+    ],
+  },
   {
     id: "dining", name: "Outdoor dining", scale: "single", emoji: "🍽️",
     blurb: "The classic one-spot café parklet — tables & planters.",

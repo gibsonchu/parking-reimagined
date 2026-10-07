@@ -57,6 +57,16 @@ export function Editor() {
           <ToyBox />
         </div>
         <div className="order-1 lg:order-2">
+          {project.prompt && (
+            <div
+              className="mb-3 rounded-md px-4 py-2.5 text-[13.5px] leading-snug"
+              style={{ background: C.grass, border: `1px solid ${C.wood}`, color: C.ink }}
+            >
+              <span className="font-extrabold">Prompt</span>
+              <span className="mx-1.5" aria-hidden="true">·</span>
+              {project.prompt}
+            </div>
+          )}
           <PlotCanvas />
           <div className="mt-2 flex min-h-9 flex-wrap items-center gap-2.5" aria-live="polite">
             {notice && (

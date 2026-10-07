@@ -18,7 +18,8 @@ export interface Project {
   id?: string;
   name: string;
   scaleId: string;
-  customDims?: { wFt: number; lFt: number }; // for the adjustable lot
+  customDims?: { wFt: number; lFt: number }; // for the adjustable lot or a curated preset
+  prompt?: string; // optional design-exercise prompt (from a template)
   items: PlacedItem[];
 }
 
@@ -133,6 +134,8 @@ export const useProject = create<ProjectState>((set, get) => ({
       project: {
         name: t.name,
         scaleId: t.scale,
+        customDims: t.customDims,
+        prompt: t.prompt,
         items: t.items.map((it) => ({ uid: uid(), ref: it.ref, x: it.x, y: it.y, rotation: it.rotation ?? 0 })),
       },
     }),

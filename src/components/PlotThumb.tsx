@@ -12,13 +12,15 @@ import { C, CAT } from "../theme/palette";
  */
 
 export function TemplateThumb({ t, sc, boxW = 208, boxH = 150 }: { t: Template; sc: Scale; boxW?: number; boxH?: number }) {
-  const scale = Math.min(boxW / sc.wFt, boxH / sc.lFt);
+  const wFt = t.customDims?.wFt ?? sc.wFt;
+  const lFt = t.customDims?.lFt ?? sc.lFt;
+  const scale = Math.min(boxW / wFt, boxH / lFt);
   return (
     <div className="flex items-center justify-center" style={{ height: boxH }}>
       <div
         className="checker relative overflow-hidden rounded-[3px]"
         style={{
-          width: sc.wFt * scale, height: sc.lFt * scale, background: C.grass,
+          width: wFt * scale, height: lFt * scale, background: C.grass,
           border: `1.5px solid ${C.woodDark}`, backgroundSize: `${scale * 2}px ${scale * 2}px`,
         }}
       >
