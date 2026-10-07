@@ -16,6 +16,8 @@ export interface Template {
   customDims?: { wFt: number; lFt: number };
   /** An optional design-exercise prompt shown in the editor when loaded. */
   prompt?: string;
+  /** An optional reference link shown with the prompt (e.g. a research resource). */
+  reference?: { label: string; href: string };
 }
 
 export const TEMPLATES: Template[] = [
@@ -24,6 +26,10 @@ export const TEMPLATES: Template[] = [
     customDims: { wFt: 30, lFt: 48 },
     blurb: "A residential block reclaimed from cut-through traffic — filter planters, a pocket park & room to gather.",
     prompt: "How would you use this curb space in a Low Traffic Neighborhood?",
+    reference: {
+      label: "Find a candidate neighborhood with Open Plans' Neighborhood Assessments",
+      href: "https://neighborhoods.openplans.org/",
+    },
     items: [
       // ── Modal filter (near gateway): planters flanked by trees close the block to through-traffic ──
       { ref: "tree", x: 0, y: 0 },

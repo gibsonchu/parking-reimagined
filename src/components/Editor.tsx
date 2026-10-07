@@ -69,6 +69,20 @@ export function Editor() {
               <span className="font-extrabold">Prompt</span>
               <span className="mx-1.5" aria-hidden="true">·</span>
               {project.prompt}
+              {project.reference && (
+                <span className="mt-1.5 block text-[12.5px]">
+                  <a
+                    href={project.reference.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold underline"
+                    style={{ color: C.leaf }}
+                  >
+                    {project.reference.label}
+                  </a>
+                  <span style={{ color: C.inkSoft }}> ↗</span>
+                </span>
+              )}
             </div>
           )}
 

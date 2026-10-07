@@ -20,6 +20,7 @@ export interface Project {
   scaleId: string;
   customDims?: { wFt: number; lFt: number }; // for the adjustable lot or a curated preset
   prompt?: string; // optional design-exercise prompt (from a template)
+  reference?: { label: string; href: string }; // optional resource link shown with the prompt
   items: PlacedItem[];
 }
 
@@ -136,6 +137,7 @@ export const useProject = create<ProjectState>((set, get) => ({
         scaleId: t.scale,
         customDims: t.customDims,
         prompt: t.prompt,
+        reference: t.reference,
         items: t.items.map((it) => ({ uid: uid(), ref: it.ref, x: it.x, y: it.y, rotation: it.rotation ?? 0 })),
       },
     }),
