@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { capture3DDataUrl } from "../lib/export3d";
 import { framedPlotPng } from "../lib/exportPng";
 import { downloadSlidePdf, downloadSlidePng } from "../lib/exportPresentation";
 import {
@@ -28,11 +29,13 @@ export function PresentationModal({ onClose }: { onClose: () => void }) {
 
   useModalDialog(dialogRef, closeRef, onClose);
 
-  // snapshot the live design once (the Konva stage is mounted behind us).
-  // pixelRatio 2 is plenty at slide size and keeps the exported files light.
+  // snapshot the live design once. If the 3D view is active, use its render;
+  // otherwise the 2D Konva plan. pixelRatio 2 keeps the exported files light.
   useEffect(() => {
     let ok = true;
-    framedPlotPng(2).then((png) => ok && setPlanImage(png));
+    const threeD = capture3DDataUrl();
+    if (threeD) setPlanImage(threeD);
+    else framedPlotPng(2).then((png) => ok && setPlanImage(png));
     return () => {
       ok = false;
     };

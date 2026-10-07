@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { byId } from "../data/elements";
 import { useProject } from "../state/useProject";
 import { C } from "../theme/palette";
@@ -6,6 +6,9 @@ import { ExportBar } from "./ExportBar";
 import { PlotCanvas } from "./PlotCanvas";
 import { TownStats } from "./TownStats";
 import { ToyBox } from "./ToyBox";
+
+// 3D view is lazy-loaded so three.js stays out of the initial bundle.
+const Plot3D = lazy(() => import("./Plot3D"));
 
 const inField = (e: KeyboardEvent) => {
   const t = e.target as HTMLElement | null;
@@ -22,6 +25,7 @@ export function Editor() {
   const select = useProject((s) => s.select);
   const notice = useProject((s) => s.notice);
 
+  const [view, setView] = useState<"2d" | "3d">("2d");
   const selectedItem = project.items.find((p) => p.uid === selectedUid);
   const selectedEl = selectedItem ? byId(selectedItem.ref) : undefined;
 
@@ -67,35 +71,83 @@ export function Editor() {
               {project.prompt}
             </div>
           )}
-          <PlotCanvas />
-          <div className="mt-2 flex min-h-9 flex-wrap items-center gap-2.5" aria-live="polite">
-            {notice && (
-              <span
-                className="rounded px-3 py-1.5 text-[13px] font-semibold"
-                style={{ background: "#fbe8e4", color: "#c93a26", border: "1px solid #e6a99e" }}
-                role="alert"
-              >
-                {notice}
-              </span>
-            )}
-            {!notice && selectedItem && selectedEl && (
-              <>
-                <span className="note text-[13.5px]" style={{ color: C.inkSoft }}>
-                  {selectedEl.name} selected · {selectedEl.impact}
-                </span>
-                <button onClick={() => rotateItem(selectedItem.uid)} className="wood-btn">
-                  Rotate
-                </button>
+
+          {/* 2D / 3D view toggle */}
+          <div className="mb-2 flex items-center justify-end">
+            <div
+              className="inline-flex overflow-hidden rounded-md"
+              style={{ border: `1px solid ${C.wood}` }}
+              role="group"
+              aria-label="Plan view"
+            >
+              {(["2d", "3d"] as const).map((v) => (
                 <button
-                  onClick={() => removeItem(selectedItem.uid)}
-                  className="wood-btn"
-                  style={{ borderColor: "#c93a26", color: "#c93a26" }}
+                  key={v}
+                  onClick={() => setView(v)}
+                  aria-pressed={view === v}
+                  className="cursor-pointer px-3.5 py-1 text-[13px] font-bold"
+                  style={{
+                    background: view === v ? C.ink : C.white,
+                    color: view === v ? "#fff" : C.inkSoft,
+                  }}
                 >
-                  Remove
+                  {v.toUpperCase()}
                 </button>
-              </>
-            )}
+              ))}
+            </div>
           </div>
+
+          {view === "2d" ? (
+            <>
+              <PlotCanvas />
+              <div className="mt-2 flex min-h-9 flex-wrap items-center gap-2.5" aria-live="polite">
+                {notice && (
+                  <span
+                    className="rounded px-3 py-1.5 text-[13px] font-semibold"
+                    style={{ background: "#fbe8e4", color: "#c93a26", border: "1px solid #e6a99e" }}
+                    role="alert"
+                  >
+                    {notice}
+                  </span>
+                )}
+                {!notice && selectedItem && selectedEl && (
+                  <>
+                    <span className="note text-[13.5px]" style={{ color: C.inkSoft }}>
+                      {selectedEl.name} selected · {selectedEl.impact}
+                    </span>
+                    <button onClick={() => rotateItem(selectedItem.uid)} className="wood-btn">
+                      Rotate
+                    </button>
+                    <button
+                      onClick={() => removeItem(selectedItem.uid)}
+                      className="wood-btn"
+                      style={{ borderColor: "#c93a26", color: "#c93a26" }}
+                    >
+                      Remove
+                    </button>
+                  </>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <Suspense
+                fallback={
+                  <div
+                    className="flex items-center justify-center rounded-md text-[13px] font-semibold"
+                    style={{ height: 460, border: `1px solid ${C.wood}`, background: C.sky, color: C.inkSoft }}
+                  >
+                    Loading 3D view…
+                  </div>
+                }
+              >
+                <Plot3D />
+              </Suspense>
+              <div className="mt-2 flex min-h-9 items-center text-[13px]" style={{ color: C.inkSoft }}>
+                Drag to orbit · scroll to zoom. Switch to <b className="mx-1">2D</b> to edit.
+              </div>
+            </>
+          )}
         </div>
         <div className="order-3 lg:sticky lg:top-[74px]">
           <TownStats />

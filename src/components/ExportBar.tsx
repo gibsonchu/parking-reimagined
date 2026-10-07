@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { download3DPng, has3DCanvas } from "../lib/export3d";
 import { exportPlotPng } from "../lib/exportPng";
 import { exportProposal } from "../lib/exportProposal";
 import { saveProject } from "../lib/storage";
@@ -74,6 +75,11 @@ export function ExportBar() {
         </button>
         <button
           onClick={async () => {
+            // in the 3D view, snapshot the 3D render; otherwise the 2D plan
+            if (has3DCanvas()) {
+              if (!download3DPng(project.name)) note("Nothing to snapshot yet");
+              return;
+            }
             if (!(await exportPlotPng(project.name))) note("Nothing to snapshot yet");
           }}
           className="wood-btn"
